@@ -4,4 +4,72 @@ author: "Katie Rochleau-Rice"
 date: "2023-11-28"
 output: html_document
 ---
- Let's put this up to github!
+```{r}
+library(tidyverse)
+
+```
+
+wide form
+```{r}
+gdp <- read_delim("../INFO 201/DATA/oecd-gdp.csv.bz2")
+gdp %>%
+  head()
+```
+
+
+
+
+
+long form
+```{r}
+gdpLong <- gdp %>%
+  pivot_longer(!c(country, indicator),
+               names_to = "year",
+               values_to = "gdp") %>%
+  mutate(year = as.numeric(year))
+
+gdpLong%>%
+  head(10)
+  
+```
+
+
+
+plotting
+```{r}
+gdpLong %>%
+  ggplot(aes(year, gdp), col = country) +
+  geom_point()
+
+```
+
+
+
+
+```{r}
+p <- data.frame(pregnant = c("Yes", "No"),
+                male = c(NA, 25),
+                female = c(11, 18))
+
+p
+```
+
+
+```{r}
+pl <- p %>%
+  pivot_longer(c(male, female),
+               names_to = "sex",
+               values_to = "count")
+
+pl
+```
+
+
+```{r}
+pw <- pl %>%
+  pivot_wider(id_cols = pregnant,
+               names_from = sex,
+               values_from = count)
+
+pw
+```
